@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Android | My Octopress Blog]]></title>
+  <link href="http://acprimer.github.io/blog/categories/android/atom.xml" rel="self"/>
+  <link href="http://acprimer.github.io/"/>
+  <updated>2017-02-17T00:01:19+08:00</updated>
+  <id>http://acprimer.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AsyncTask]]></title>
+    <link href="http://acprimer.github.io/blog/2017/02/17/asynctask/"/>
+    <updated>2017-02-17T00:00:29+08:00</updated>
+    <id>http://acprimer.github.io/blog/2017/02/17/asynctask</id>
+    <content type="html"><![CDATA[<h2>用法</h2>
+
+<ol>
+<li><p>创建一个子类去继承AsyncTask类，重写至少一个方法(<code>doInBackground(Params...)</code>)，一般还需要重写(<code>onPostExecute(Result)</code>)，参考例子：
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">class</span> <span class="nc">DownloadFilesTask</span> <span class="kd">extends</span> <span class="n">AsyncTask</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">URL</span><span class="o">,</span> <span class="n">Integer</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'> <span class="kd">protected</span> <span class="n">Long</span> <span class="nf">doInBackground</span><span class="o">(</span><span class="n">URL</span><span class="o">&amp;</span><span class="n">hellip</span><span class="o">;</span> <span class="n">urls</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>     <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">urls</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+</span><span class='line'>     <span class="kt">long</span> <span class="n">totalSize</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>     <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span> <span class="n">count</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>         <span class="n">totalSize</span> <span class="o">+=</span> <span class="n">Downloader</span><span class="o">.</span><span class="na">downloadFile</span><span class="o">(</span><span class="n">urls</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+</span><span class='line'>         <span class="n">publishProgress</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span> <span class="o">((</span><span class="n">i</span> <span class="o">/</span> <span class="o">(</span><span class="kt">float</span><span class="o">)</span> <span class="n">count</span><span class="o">)</span> <span class="o">*</span> <span class="mi">100</span><span class="o">));</span>
+</span><span class='line'>         <span class="c1">// Escape early if cancel() is called</span>
+</span><span class='line'>         <span class="k">if</span> <span class="o">(</span><span class="n">isCancelled</span><span class="o">())</span> <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>     <span class="o">}</span>
+</span><span class='line'>     <span class="k">return</span> <span class="n">totalSize</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onProgressUpdate</span><span class="o">(</span><span class="n">Integer</span><span class="o">&amp;</span><span class="n">hellip</span><span class="o">;</span> <span class="n">progress</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>     <span class="n">setProgressPercent</span><span class="o">(</span><span class="n">progress</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+</span><span class='line'> <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onPostExecute</span><span class="o">(</span><span class="n">Long</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>     <span class="n">showDialog</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Downloaded</span> <span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="o">+</span> <span class="n">result</span> <span class="o">+</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span> <span class="n">bytes</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></p></li>
+<li>执行异步任务。
+<code>java
+new DownloadFilesTask().execute(url1, url2, url3);
+</code></li>
+</ol>
+
+
+<h3>参数</h3>
+
+<p>AsyncTask有3个泛型参数：
+1. <code>Params</code>，在执行异步任务时传入的参数，会作为后台任务的参数。
+2. <code>Progress</code>，进度值
+3. <code>Result</code>，后台任务执行完成后的返回值。</p>
+
+<p>这3个参数如果不需要，可以使用Void类型：
+<code>java
+private class MyTask extends AsyncTask&lt;Void, Void, Void&gt; { ... }
+</code></p>
+
+<h3>执行步骤</h3>
+
+<p>异步任务共分成4个步骤：
+1. <code>onPreExecute()</code>，在UI线程中执行，在任务执行之前被调用，一般用于界面初始化操作比如在用户界面上显示进度条。
+2. <code>doInBackground(Params...)</code>，在后台线程中执行，传入的参数是执行异步任务的参数，调用完成后产生的返回值用于<code>publishProgress</code>的参数。在执行过程中，还可以调用<code>onProgressUpdate</code>来生成进度。在这个方法中是不可以操作UI界面的。
+3. <code>onProgressUpdate(Progress...)</code>，在UI线程中执行，当doInBackground函数执行的过程中产生了<code>publishProgress</code>的调用，就会执行该方法。一般用于实时更新用户界面中的进度。
+4. <code>onPostExecute(Result)</code>，在UI线程中执行，当后台线程执行完毕后返回值会作为参数传给<code>onPostExecute</code>方法，用于获取执行结果并在用户界面中展示。</p>
+
+<h3>取消任务</h3>
+
+<p>可以通过调用<code>cancel(boolean mayInterruptIfRunning)</code>方法来取消任务，传入的参数<code>mayInterruptIfRunning</code>表示后台任务是否可以被打断直接取消。返回值表示是否取消成功。
+调用<code>cancel(boolean)</code>方法后，会执行<code>onCancel(Object)</code>方法而不会调用
+<code>onPostExecute(Object)</code>。
+取消任务之后，<code>isCancelled()</code>会更新标记为true，这时应该在<code>doInBackground</code>方法中检查该标记并尽早退出任务。</p>
+
+<h2>源码</h2>
+
+<h3>SerialExecutor</h3>
+
+<pre><code class="java">private static class SerialExecutor implements Executor {
+    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+    Runnable mActive;
+
+    public synchronized void execute(final Runnable r) {
+        mTasks.offer(new Runnable() {
+            public void run() {
+                try {
+                    r.run();
+                } finally {
+                    scheduleNext();
+                }
+            }
+        });
+        if (mActive == null) {
+            scheduleNext();
+        }
+    }
+
+    protected synchronized void scheduleNext() {
+        if ((mActive = mTasks.poll()) != null) {
+            THREAD_POOL_EXECUTOR.execute(mActive);
+        }
+    }
+}
+</code></pre>
+
+<p>当调用AsyncTask的execute()这个方法进行执行时，默认采用SerialExecutor来运行任务，保证了AsyncTask是顺序执行的，每次只执行一个，执行完一个才会执行下一个。</p>
+
+<p>当我们想采用并行的方式执行任务时，可以调用<code>executeOnExecutor(Executor exec, Params... params)</code>这个方法通过传入一个Executor来进行执行，而这个传入的参数可以使用AsyncTask内部定义的THREAD_POOL_EXECUTOR。
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CPU_COUNT</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">();</span>
+</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">CORE_POOL_SIZE</span> <span class="o">=</span> <span class="n">CPU_COUNT</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">MAXIMUM_POOL_SIZE</span> <span class="o">=</span> <span class="n">CPU_COUNT</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">KEEP_ALIVE</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadFactory</span> <span class="n">sThreadFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ThreadFactory</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">AtomicInteger</span> <span class="n">mCount</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">AtomicInteger</span><span class="o">(</span><span class="mi">1</span><span class="o">);&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">Thread</span> <span class="nf">newThread</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="s">&quot;AsyncTask #&quot;</span> <span class="o">+</span> <span class="n">mCount</span><span class="o">.</span><span class="na">getAndIncrement</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;};&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;</span> <span class="n">sPoolWorkQueue</span> <span class="o">=</span>
+</span><span class='line'>        <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;(</span><span class="mi">128</span><span class="o">);&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;/&lt;</span><span class="n">em</span><span class="o">&gt;*</span>
+</span><span class='line'> <span class="o">*</span> <span class="n">An</span> <span class="o">{</span><span class="nd">@link</span> <span class="n">Executor</span><span class="o">}</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">tasks</span> <span class="n">in</span> <span class="n">parallel</span><span class="o">.</span>
+</span><span class='line'> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Executor</span> <span class="n">THREAD_POOL_EXECUTOR</span>
+</span><span class='line'>        <span class="o">=</span> <span class="k">new</span> <span class="nf">ThreadPoolExecutor</span><span class="o">(</span><span class="n">CORE_POOL_SIZE</span><span class="o">,</span> <span class="n">MAXIMUM_POOL_SIZE</span><span class="o">,</span> <span class="n">KEEP_ALIVE</span><span class="o">,</span>
+</span><span class='line'>        <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">,</span> <span class="n">sPoolWorkQueue</span><span class="o">,</span> <span class="n">sThreadFactory</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">通过代码可以看出</span><span class="err">，</span><span class="n">THREAD_POOL_EXECUTOR这个线程池</span><span class="err">，</span><span class="n">同时可以工作的线程个数为CPU核心数</span><span class="o">+</span><span class="mi">1</span><span class="err">，</span><span class="n">线程池大小为128</span><span class="err">。</span>
+</span><span class='line'><span class="n">用户也可以通过自定义ThreadPoolExecutor的方式来创建线程池</span><span class="err">：</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span><span class="n">java</span>
+</span><span class='line'><span class="n">Executor</span> <span class="n">exec</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ThreadPoolExecutor</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">200</span><span class="o">,</span> <span class="mi">10</span><span class="o">,&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'>        <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
+</span><span class='line'><span class="k">new</span> <span class="nf">DownloadFilesTask</span><span class="o">().</span><span class="na">executeOnExecutor</span><span class="o">(</span><span class="n">exec</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h3>Status</h3>
+
+<pre><code class="java">/**
+ * Indicates the current status of the task. Each status will be set only once
+ * during the lifetime of a task.
+ */
+public enum Status {
+    /**
+     * Indicates that the task has not been executed yet.
+     */
+    PENDING,
+    /**
+     * Indicates that the task is running.
+     */
+    RUNNING,
+    /**
+     * Indicates that {@link AsyncTask#onPostExecute} has finished.
+     */
+    FINISHED,
+}
+// 使用volatile修饰变量mStatus是为了多个线程读写mStatus的安全
+private volatile Status mStatus = Status.PENDING;
+/**
+ * Returns the current status of this task.
+ *
+ * @return The current status.
+ */
+// 公有方法，可以获取任务的当前状态
+public final Status getStatus() {
+    return mStatus;
+}
+</code></pre>
+
+<p>任务的状态有三种：
+1. PENDING，还没有执行
+2. RUNNING，正在执行
+3. FINISHED，已完成
+这三种状态只会被设置一次，状态为RUNNING或者FINISHED的任务再次执行会抛出IllegalStateException异常。</p>
+
+<h2>缺点</h2>
+
+<h3>AsyncTask的生命周期</h3>
+
+<p>AsyncTask的生命周期和Activity的生命周期是没有关联的。退出当前Activity时（即使退出整个应用），AsyncTask并不会结束运行。想要结束AsyncTask就必须通过调用<code>AsyncTask.cancel()</code>来取消这个异步任务。</p>
+
+<h2>参考</h2>
+
+<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/25099159">Android中糟糕的AsyncTask</a></li>
+<li><a href="http://www.voidcn.com/blog/fyfcauc/article/p-4815250.html">Android Loader机制 源码笔记(2)</a></li>
+<li><a href="http://blog.csdn.net/guolin_blog/article/details/11711405">Android AsyncTask完全解析，带你从源码的角度彻底理解</a></li>
+<li><a href="http://blog.csdn.net/hitlion2008/article/details/7983449">Android实战技巧：深入解析AsyncTask</a></li>
+<li><a href="http://blog.csdn.net/singwhatiwanna/article/details/17596225">Android源码分析—带你认识不一样的AsyncTask</a></li>
+<li><a href="http://blog.csdn.net/qq_23547831/article/details/50803849">Android源码解析之（三）&ndash;>异步任务AsyncTask</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://acprimer.github.io/blog/2017/02/17/asynctask/</loc>
+<lastmod>2017-02-17T00:00:29+08:00</lastmod>
+</url>
+<url>
 <loc>http://acprimer.github.io/blog/2017/02/16/handler/</loc>
 <lastmod>2017-02-16T23:28:08+08:00</lastmod>
 </url>
@@ -9,5 +13,14 @@
 </url>
 <url>
 <loc>http://acprimer.github.io/</loc>
+</url>
+<url>
+<loc>http://acprimer.github.io/blog/categories/android/</loc>
+</url>
+<url>
+<loc>http://acprimer.github.io/blog/categories/duo-xian-cheng/</loc>
+</url>
+<url>
+<loc>http://acprimer.github.io/blog/categories/yuan-ma/</loc>
 </url>
 </urlset>
